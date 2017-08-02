@@ -13,7 +13,6 @@ function agregarCajas() {
   for (var i = 0; i < numCajas; i++) {
     var inputCaja = document.createElement("input");
     inputCaja.setAttribute("id", "input_"+i);
-    inputCaja.setAttribute("type", "number");
     divCajas.appendChild(inputCaja);
   }
 }
