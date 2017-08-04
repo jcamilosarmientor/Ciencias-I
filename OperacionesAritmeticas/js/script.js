@@ -1,6 +1,8 @@
 var numeros = []; // Arrelgo para los números ingresados
-var formula = "5 + ( N(N - 1) - (N/2)(N - 1)) + 6(N - 1) + 3"
 // Crea los input establecidos por el usuario
+var promedio = 0;
+var mejorForma = 0;
+var peorForma = 0;
 function agregarCajas() {
   var numCajas = document.getElementById("input_cajas").value;
   var divCajas = document.getElementById("cajas");
@@ -27,17 +29,22 @@ function calcularFunciones() {
       numeros.push(valor);
     }
   }
-  var resultado = ordenarBurbuja();
+  var contando = ordenarBurbuja();
+  calcularOperaciones();
   var divResultado = document.getElementById("resultado");
+  var divResultadoForm = document.getElementById("resultadoFormula");
   var divArreglo = document.getElementById("arreglo");
   divArreglo.innerHTML = numeros;
-  divResultado.innerHTML = "Formula: " + formula + "<br>Resultado: " + resultado;
+  divResultado.innerHTML = "<br>Contando: " + contando;
+  divResultadoForm.innerHTML = "<br>Mejor Caso: " + mejorForma;
+  divResultadoForm.innerHTML = "<br>Peor Caso: " + peorForma;
+  divResultadoForm.innerHTML = "<br>Caso Promedio: " + promedio;
 }
 
 // Ordena el arreglo numeros
 function ordenarBurbuja() {
   var cont = 0;
-  cont += 2; // cont = 0; i = 0
+  cont += 1; // i = 0
   for (var i = 0; i < numeros.length-1; i++) {
     cont += 3; // i < numeros.length-1; i++
     cont += 2; // j = i+1
@@ -53,8 +60,16 @@ function ordenarBurbuja() {
     }
     cont++; // fin del ciclo for de i
   }
-  cont++; // fin del ciclo for de j
+  cont+=2; // fin del ciclo for de j
   return cont;
+}
+
+// Calcula el número de operaciones elementales con la formula
+function calcularOperaciones() {
+  var n = numeros.length;
+  promedio = 8.5*((n*(n-1))-(n-1)-(((n-2)*(n-1))/2)) + (6*(n-1))+3;
+  peorForma = 12*((n*(n-1))-(n-1)-(((n-2)*(n-1))/2)) + (6*(n-1))+3;
+  mejorForma = 5*((n*(n-1))-(n-1)-(((n-2)*(n-1))/2)) + (6*(n-1))+3;
 }
 
 // Cálcula el factorial del número
