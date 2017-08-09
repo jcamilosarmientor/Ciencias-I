@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="OrdenamientoApp">
   <head>
     <meta charset="utf-8">
     <title> Método de Ordenamiento por Selección </title>
-    <script type="text/javascript" src="js/script.js"></script>
+    <script src="js/script.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
   </head>
-  <body>
+  <body ng-controller="controller">
     <h1> Método de Ordenamiento por Selección </h1>
-    <div id="divArr"></div>
+    <div id="divSelection"> {{ arr }} </div>
+    <div id="divBubble"></div>
     <button type="button" onclick="mostrarArreglo()"> Ordenar! </button>
   </body>
 </html>

@@ -1,29 +1,58 @@
-var arr = [1,7,3];
-//var arr = [1,2,3,5,0,1,8];
+var app = angular.module('OrdenamientoApp');
+app.controller('controller', function($scope) {
 
-// Organiza arr con el método de clasificación por selección
-function ordenarArreglo() {
-  var v = 0;  // Valor
-  var p = 0;  // Posición
-  for (var i = 0; i < arr.length-1; i++) {
-    for (var j = i+1; j < arr.length; j++) {
-      if(arr[i+2] > arr[j]) {
-        console.log(arr[i+1] +">"+ arr[j]);
-        v = arr[j];
-        p = j;
-      } else {
-        p = i;
-        v = arr[i];
+  //var arr = [1,7,3];
+  $scope.arr = [1,2,3,5,0,1,8];
+
+  var contSelection = 0;
+  var contBurble = 0;
+
+  // Organiza arr con el método de clasificación por selección
+  function selectionSort( myArr ){
+    var size = myArr.length;
+    for( var slot = 0; slot < size -1; slot ++ ){ // outer loop
+      var smallest = slot;
+      for( var check = slot + 1; check < size; check++ ){ // inner loop
+        if( myArr[check] < myArr[smallest] ){
+          smallest = check;
+        }
+      }
+      if( smallest != slot ){
+        var tmpVal = myArr[smallest];
+        myArr[smallest] = myArr[slot];
+        myArr[slot] = tmpVal;
       }
     }
-    arr[p] = arr[i];
-    arr[i] = v;
+    return myArr;
   }
-}
 
-// Muestra en el div correspondiente el arreglo ordenado
-function mostrarArreglo() {
-  ordenarArreglo();
-  var cajaArr = document.getElementById("divArr");
-  divArr.innerHTML = arr;
-}
+  // Organiza arr con el método burbuja
+  function bubbleSort(myArr){
+    var size = myArr.length;
+
+    for( var pass = 1; pass < size; pass++ ){ // outer loop
+      for( var left = 0; left < (size - pass); left++){ // inner loop
+        var right = left + 1;
+        if( myArr[left] > myArr[right] ){
+          var tmpVal = myArr[left];
+          myArr[left] = myArr[right];
+          myArr[right] = tmpVal;
+        }
+      }
+    }
+
+    return myArr;
+  }
+
+
+  // Muestra en el div correspondiente el arreglo ordenado
+  function mostrarArreglo() {
+    selectionSort(arr);
+    bubbleSort(arr);
+    //var divSelection = document.getElementById("divSelection");
+    //var divBubble = document.getElementById("divBubble");
+    //divSelection.innerHTML = arr;
+    //divBubble.innerHTML = arr;
+  }
+
+});
