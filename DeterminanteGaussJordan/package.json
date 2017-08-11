@@ -1,0 +1,29 @@
+{
+  "name": "determiante_gauss",
+  "version": "1.0.0",
+  "description": "Calcular el determinante de cualquier matriz nxn por el metodo de gauss y calcular el número de operaciones elementales",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcamilosarmientor/Ciencias-I.git"
+  },
+  "keywords": [
+    "gaussjordan",
+    "javascript",
+    "operaciones_elementales"
+  ],
+  "author": "Juan Camilo Sarmiento Reyes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcamilosarmientor/Ciencias-I/issues"
+  },
+  "homepage": "https://github.com/jcamilosarmientor/Ciencias-I#readme",
+  "dependencies": {
+    "angular": "^1.6.5",
+    "angular-nvd3": "^1.0.9",
+    "bootstrap": "^4.0.0-beta"
+  }
+}

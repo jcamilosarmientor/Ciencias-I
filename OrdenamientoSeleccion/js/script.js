@@ -5,9 +5,10 @@ app.controller('controller', function($scope) {
 
   var contSelection; // Contador para el número de operaciones del algorito de selección
   var contBubble; // Contador para el número de operaciones para el algoritmo burbuja
+  var contInsertion; // Contado para el número de operaciones para el algoritmo inserción
 
-  // Organiza arr con el método de clasificación por selección
-  function selectionSort( myArr ){
+  // Ordenamiento por selección
+  function selectionSort(myArr){
     var size = myArr.length;
     contSelection = 1; // slot = 0;
     for( var slot = 0; slot < size -1; slot ++ ){ // outer loop
@@ -34,7 +35,7 @@ app.controller('controller', function($scope) {
     return myArr;
   }
 
-  // Organiza arr con el método burbuja
+  // Ordenamiento burbula simple
   function bubbleSort(myArr){
     var tamanio = myArr.length;
     contBubble = 1; // pass = 1;
@@ -55,9 +56,34 @@ app.controller('controller', function($scope) {
     return myArr;
   }
 
+  // Ordenamiento por inserción
+  function insertionSort(myArr) {
+      var tamanio = myArr.length;
+      var i = tamanio/2;
+      contInsertion = 1; // var i = tamanio/2;
+      while (i <= tamanio) {
+        var j = i - 1;
+        var temp = myArr[i];
+        contInsertion += 7; // (i <= n) var j = i - 1; var temp = myArr[i]; (temp < arr[j])
+        while (temp < myArr[j]) {
+          myArr[j+1] = myArr[j];
+          j = j - 1;
+          contInsertion += 7; // j+1; arr[j+1] = arr[j]; j = j - 1;
+        }
+        contInsertion++; // Fin del while interior
+        myArr[j+1] = temp;
+        i++;
+        contInsertion += 5; // arr[j+1] = temp; i++;
+      }
+      contInsertion++; // Fin del while exterior
+      return myArr;
+  }
+
   // Sobreescribe arr
   function generarArreglo() {
-    for (var i = 20; i <= 200; i++) {
+    $scope.data[0].values = [];
+    $scope.data[1].values = [];
+    for (var i = 20; i < 200; i++) {
       var arr = [];
       for (var j = 0; j < i; j++) {
         var aleatorio = Math.floor((Math.random() * 100) + 1); // Genera un número aleatorio entre 1 y 100
@@ -65,8 +91,11 @@ app.controller('controller', function($scope) {
       }
       selectionSort(arr);
       bubbleSort(arr);
+      insertionSort(arr);
+      console.log(arr);
       $scope.data[0].values.push({x: i, y: contSelection});
       $scope.data[1].values.push({x: i, y: contBubble});
+      $scope.data[2].values.push({x: i, y: contInsertion});
     }
   }
 
@@ -74,8 +103,6 @@ app.controller('controller', function($scope) {
   $scope.mostrarArreglo = function() {
     generarArreglo();
     $scope.arr = arr;
-    $scope.contSelection = contSelection;
-    $scope.contBubble = contBubble;
   }
 
   $scope.options = {
@@ -86,20 +113,20 @@ app.controller('controller', function($scope) {
         top: 20,
         right: 20,
         bottom: 60,
-        left: 40
+        left: 150
       },
 
       color: d3.scale.category10().range(),
       duration: 500,
       useInteractiveGuideline: true,
       xAxis: {
-        axisLabel: 'X Axis',
+        axisLabel: 'X (Nº de elementos)',
         tickFormat: function(d){
           return d3.format(',f')(d);
         }
       },
       yAxis: {
-        axisLabel: 'Y Axis',
+        axisLabel: 'Y (Operaciones \n elementales)',
         rotateYLabel: false
       },
       y2Axis: {
@@ -120,5 +147,9 @@ app.controller('controller', function($scope) {
       key: "Ordenamiento Burbuja",
       values: []
     },
+    {
+      key: "Ordenamiento Inserción",
+      values: []
+    }
   ];
 });

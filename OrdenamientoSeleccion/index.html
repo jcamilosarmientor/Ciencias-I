@@ -13,10 +13,7 @@
 <body ng-controller="controller">
   <h1> Método de Ordenamiento por Selección </h1>
   <button type="button" ng-click="mostrarArreglo()"> Ordenar! </button><br>
-  <div id="divSelection"> {{ arr }} </div>
-  <div id="divBubble"></div>
-  <br><b><label> Contador Selección: </label></b> {{ contSelection }}
-  <br><br><b><label> Contador Burbuja: </label></b> {{ contBubble }}
+  <div id="divArr"> {{ arr }} </div>
   <div class="grafico">
     <nvd3 options="options" data="data"></nvd3>
   </div>
