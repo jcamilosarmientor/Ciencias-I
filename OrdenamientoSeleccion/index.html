@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html ng-app="OrdenamientoApp">
-  <head>
-    <meta charset="utf-8">
-    <title> Método de Ordenamiento por Selección </title>
-    <script src="js/script.js"></script>
-    <script src="node_modules/angular/angular.js"></script>
-  </head>
-  <body ng-controller="controller">
-    <h1> Método de Ordenamiento por Selección </h1>
-    <div id="divSelection"> {{ arr }} </div>
-    <div id="divBubble"></div>
-    <button type="button" onclick="mostrarArreglo()"> Ordenar! </button>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title> Método de Ordenamiento por Selección </title>
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="node_modules/d3/d3.js"></script>
+  <script src="node_modules/nvd3/build/nv.d3.js"></script> <!-- or use another assembly -->
+  <script src="node_modules/angular-nvd3/dist/angular-nvd3.js"></script>
+  <link rel="stylesheet" href="node_modules/nvd3/build/nv.d3.css">
+  <script type="text/javascript" src="js/script.js"></script>
+</head>
+<body ng-controller="controller">
+  <h1> Método de Ordenamiento por Selección </h1>
+  <button type="button" ng-click="mostrarArreglo()"> Ordenar! </button><br>
+  <div id="divSelection"> {{ arr }} </div>
+  <div id="divBubble"></div>
+  <br><b><label> Contador Selección: </label></b> {{ contSelection }}
+  <br><br><b><label> Contador Burbuja: </label></b> {{ contBubble }}
+  <div class="grafico">
+    <nvd3 options="options" data="data"></nvd3>
+  </div>
+</body>
 </html>
