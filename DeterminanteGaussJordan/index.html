@@ -3,14 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title> Determinante Gauss Jordan </title>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <link type="text/css" href="node_modules/bootstrap/dist/bootstrap.css"/>
   </head>
   <body>
     <form>
       <label for="inputCantidad"> Ingresa el tamaño de la matriz </label>
-      <input type="text" id="inputCantidad">
+      <input type="number" id="inputCantidad">
       <button type="button" name="button" onclick="agregarCajas()"> Crear! </button>
       <div id="matriz"></div>
+      <button type="button" id='btnCalcular' onclick="llenarMatriz()"> Cálcular Determinante </button>
     </form>
   </body>
 </html>
