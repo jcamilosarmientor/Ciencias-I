@@ -3,6 +3,7 @@ var numeros = []; // Arrelgo para los números ingresados
 var promedio = 0;
 var mejorForma = 0;
 var peorForma = 0;
+
 function agregarCajas() {
   var numCajas = document.getElementById("input_cajas").value;
   var divCajas = document.getElementById("cajas");
@@ -70,14 +71,4 @@ function calcularOperaciones() {
   promedio = 8.5*((n*(n-1))-(n-1)-(((n-2)*(n-1))/2)) + (6*(n-1))+3;
   peorForma = 12*((n*(n-1))-(n-1)-(((n-2)*(n-1))/2)) + (6*(n-1))+3;
   mejorForma = 5*((n*(n-1))-(n-1)-(((n-2)*(n-1))/2)) + (6*(n-1))+3;
-}
-
-// Cálcula el factorial del número
-function factorial(num) {
-  var a = 1;
-  cont++;
-  for (var i = 1; i <= num; i++) {
-    a *= i;
-  }
-  return a;
 }
