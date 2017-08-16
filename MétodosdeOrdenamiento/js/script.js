@@ -1,11 +1,11 @@
 var app = angular.module('OrdenamientoApp', ['nvd3']);
 app.controller('controller', function($scope) {
   var arr; // Arreglo a organizar
-  var xs;
+  var chart;
 
-  var contSelection; // Contador para el número de operaciones del algorito de selección
-  var contBubble; // Contador para el número de operaciones para el algoritmo burbuja
-  var contInsertion; // Contado para el número de operaciones para el algoritmo inserción
+  var contSelection, // Contador para el número de operaciones del algorito de selección
+      contBubble, // Contador para el número de operaciones para el algoritmo burbuja
+      contInsertion; // Contado para el número de operaciones para el algoritmo inserción
 
   // Ordenamiento por selección
   function selectionSort(myArr){
@@ -58,32 +58,33 @@ app.controller('controller', function($scope) {
 
   // Ordenamiento por inserción
   function insertionSort(myArr) {
-      var tamanio = myArr.length;
-      var i = tamanio/2;
-      contInsertion = 1; // var i = tamanio/2;
-      while (i <= tamanio) {
-        var j = i - 1;
-        var temp = myArr[i];
-        contInsertion += 7; // (i <= n) var j = i - 1; var temp = myArr[i]; (temp < arr[j])
-        while (temp < myArr[j]) {
-          myArr[j+1] = myArr[j];
-          j = j - 1;
-          contInsertion += 7; // j+1; arr[j+1] = arr[j]; j = j - 1;
-        }
-        contInsertion++; // Fin del while interior
-        myArr[j+1] = temp;
-        i++;
-        contInsertion += 5; // arr[j+1] = temp; i++;
+    var tamanio = myArr.length;
+    var i = tamanio/2;
+    contInsertion = 1; // var i = tamanio/2;
+    while (i <= tamanio) {
+      var j = i - 1;
+      var temp = myArr[i];
+      contInsertion += 7; // (i <= n) var j = i - 1; var temp = myArr[i]; (temp < arr[j])
+      while (temp < myArr[j]) {
+        myArr[j+1] = myArr[j];
+        j = j - 1;
+        contInsertion += 7; // j+1; arr[j+1] = arr[j]; j = j - 1;
       }
-      contInsertion++; // Fin del while exterior
-      return myArr;
+      contInsertion++; // Fin del while interior
+      myArr[j+1] = temp;
+      i++;
+      contInsertion += 6; // arr[j+1] = temp; i++;
+    }
+    contInsertion++; // Fin del while exterior
+    return myArr;
   }
 
   // Sobreescribe arr
   function generarArreglo() {
     $scope.data[0].values = [];
     $scope.data[1].values = [];
-    for (var i = 20; i < 200; i++) {
+    $scope.data[2].values = [];
+    for (var i = 20; i < 201; i++) {
       var arr = [];
       for (var j = 0; j < i; j++) {
         var aleatorio = Math.floor((Math.random() * 100) + 1); // Genera un número aleatorio entre 1 y 100
@@ -92,7 +93,6 @@ app.controller('controller', function($scope) {
       selectionSort(arr);
       bubbleSort(arr);
       insertionSort(arr);
-      console.log(arr);
       $scope.data[0].values.push({x: i, y: contSelection});
       $scope.data[1].values.push({x: i, y: contBubble});
       $scope.data[2].values.push({x: i, y: contInsertion});
@@ -116,25 +116,34 @@ app.controller('controller', function($scope) {
         left: 150
       },
 
+      x: function(d){ return d.x; },
+
       color: d3.scale.category10().range(),
-      duration: 500,
+      duration: 300,
       useInteractiveGuideline: true,
+      clipVoronoi: false,
+
       xAxis: {
         axisLabel: 'X (Nº de elementos)',
         tickFormat: function(d){
-          return d3.format(',f')(d);
-        }
+          return d3.format('.02f')(d);
+        },
       },
+
       yAxis: {
         axisLabel: 'Y (Operaciones \n elementales)',
-        rotateYLabel: false
+        rotateYLabel: false,
+        axisLabelDistance: -10,
+        tickFormat: function(d){
+          return d3.format('.02f')(d);
+        },
       },
+
       y2Axis: {
         tickFormat: function(d){
           return d3.format(',.2f')(d);
         }
       }
-
     }
   };
 
