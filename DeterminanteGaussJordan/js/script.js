@@ -29,38 +29,33 @@ function agregarCajas() {
 function llenarMatriz() {
   numeros = [];
   var numCajas = $('#inputCantidad').val();
-  for (var i = 0; i < numCajas/2; i++) {
+  for (var i = 0; i < numCajas; i++) {
     var fila = [];
-    for (var j = 0; j < numCajas/2; j++) {
+    for (var j = 0; j < numCajas; j++) {
       var valor = $('#input_'+i+'_'+j).val();
-      fila.push(valor);
+      fila.push(parseInt(valor));
     }
     numeros.push(fila);
   }
-  calcularDeterminante();
+  calcularDeterminante(numeros);
 }
 
-function calcularDeterminante () {
-  var m = numeros;
-  var n = m.length;
-  for (var i = 0; i < n-1; i++) {
-    if (m[i][i] == 0) {
-      // Intercambiar una fila más abajo
-      // Si toda la fila es 0, el determinante no existe
-      // Si se intercambia con una fila de abajo se multiplica el determinante por -1
-    }
-    for (var k = i+1; k < n; k++) {
-      for (var j = i+1; j < n; j++) {
-        m[k][j] = m[k][j] - (m[k][j]*m[i][j])/m[i][i];
+function calcularDeterminante (a) {
+  n = a.length;
+  signo= 1;
+  for(i=0;i<n-2;i++){
+    for(j=i+1; j<n; j++){
+      for(k=i+1;k<n;k++){
+        a[j][k]= a[j][k]-((a[i][k]*a[j][i])/(a[i][i]));
       }
     }
   }
-  console.log(m[0][0]);
-  var d = 1;  // determinante
-  for (var i = 0; i < n; i++) {
-    d = d * m[i][i];
+  det=1
+  for(i=0;i<n; i++){
+    det= det*a[i][i];
   }
-  console.log(d);
+  det= det*signo;
+  console.log(det);
 }
 
 function interCambiarFila(fila) {

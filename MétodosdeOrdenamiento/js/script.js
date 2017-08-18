@@ -4,9 +4,31 @@ app.controller('controller', function($scope) {
   var chart;
 
   var contSelection, // Contador para el número de operaciones del algorito de selección
-      contBubble, // Contador para el número de operaciones para el algoritmo burbuja
-      contInsertion; // Contado para el número de operaciones para el algoritmo inserción
+  contBubble, // Contador para el número de operaciones para el algoritmo burbuja
+  contInsertion,  // Contador para el número de operaciones para el algoritmo inserción
+  contMerge;  // Contaror para el número de operaciones apra el algoritmo merge
 
+
+  // Ordenamiento burbula simple
+  function bubbleSort(myArr){
+    var tamanio = myArr.length;
+    contBubble = 1; // pass = 1;
+    for (var i = 0; i < tamanio-1; i++) {
+      contBubble += 3; //i < tamanio-1; i++
+      contBubble += 2; // var j = i+1
+      for (var j = i+1; j < tamanio; j++) {
+        contBubble += 3; // j < tamanio; j++
+        contBubble += 3; // myArr[i] > myArr[j]
+        if (myArr[i] > myArr[j]) {
+          var temp = myArr[j];
+          myArr[j] = myArr[i];
+          myArr[i] = temp;
+          contBubble += 7; // var temp = myArr[j]; myArr[j] = myArr[i]; myArr[i] = temp;
+        }
+      }
+    }
+    return myArr;
+  }
   // Ordenamiento por selección
   function selectionSort(myArr){
     var size = myArr.length;
@@ -35,27 +57,6 @@ app.controller('controller', function($scope) {
     return myArr;
   }
 
-  // Ordenamiento burbula simple
-  function bubbleSort(myArr){
-    var tamanio = myArr.length;
-    contBubble = 1; // pass = 1;
-    for (var i = 0; i < tamanio-1; i++) {
-      contBubble += 3; //i < tamanio-1; i++
-      contBubble += 2; // var j = i+1
-      for (var j = i+1; j < tamanio; j++) {
-        contBubble += 3; // j < tamanio; j++
-        contBubble += 3; // myArr[i] > myArr[j]
-        if (myArr[i] > myArr[j]) {
-          var temp = myArr[j];
-          myArr[j] = myArr[i];
-          myArr[i] = temp;
-          contBubble += 7; // var temp = myArr[j]; myArr[j] = myArr[i]; myArr[i] = temp;
-        }
-      }
-    }
-    return myArr;
-  }
-
   // Ordenamiento por inserción
   function insertionSort(myArr) {
     var tamanio = myArr.length;
@@ -79,6 +80,51 @@ app.controller('controller', function($scope) {
     return myArr;
   }
 
+  function sort(array) {
+    contMerge = 1;
+    var length = array.length,
+    mid    = Math.floor(length * 0.5),
+    left   = array.slice(0, mid),
+    right  = array.slice(mid, length);
+    contMerge += 5;
+    if(length === 1) {
+      contMerge++;
+      return array;
+    }
+    contMerge++;
+    return conquer(sort(left), sort(right));
+  }
+
+  var conquer = function(left, right) {
+    var sorted = [];
+    var i = 0; //left tracker
+    var j = 0; //right tracker
+    contMerge += 5;
+    while (i < left.length || j < right.length) {
+      contMerge += 2;
+      if (i < left.length && j < right.length) {
+        contMerge += 3;
+        if (left[i] < right[j]){
+          sorted.push(left[i]);
+          i++;
+        } else {
+          sorted.push(right[j]);
+          j++;
+        }
+      } else if (i < left.length){
+        sorted.push(left[i]);
+        i++;
+      } else {
+        sorted.push(right[j]);
+        j++;
+      }
+      contMerge += 3;
+    }
+    contMerge++;
+    return sorted;
+  }
+
+
   // Sobreescribe arr
   function generarArreglo() {
     $scope.data[0].values = [];
@@ -93,9 +139,11 @@ app.controller('controller', function($scope) {
       selectionSort(arr);
       bubbleSort(arr);
       insertionSort(arr);
+      sort(arr);
       $scope.data[0].values.push({x: i, y: contSelection});
       $scope.data[1].values.push({x: i, y: contBubble});
       $scope.data[2].values.push({x: i, y: contInsertion});
+      $scope.data[3].values.push({x: i, y: contMerge});
     }
   }
 
@@ -158,6 +206,10 @@ app.controller('controller', function($scope) {
     },
     {
       key: "Ordenamiento Inserción",
+      values: []
+    },
+    {
+      key: "Ordenamiento MergeSort",
       values: []
     }
   ];
