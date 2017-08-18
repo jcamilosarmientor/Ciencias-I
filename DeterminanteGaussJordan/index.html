@@ -3,18 +3,30 @@
   <head>
     <meta charset="utf-8">
     <title> Determinante Gauss Jordan </title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
-    <link type="text/css" href="node_modules/bootstrap/dist/bootstrap.css"/>
   </head>
   <body>
-    <form>
-      <label for="inputCantidad"> Ingresa el tamaño de la matriz </label>
-      <input type="number" id="inputCantidad">
-      <button type="button" name="button" onclick="agregarCajas()"> Crear! </button>
-      <div id="matriz"></div>
-      <button type="button" id='btnCalcular' onclick="llenarMatriz()"> Cálcular Determinante </button>
-    </form>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-5">
+        <form>
+          <div class="form-group col-md-12 col-md-offset-1">
+            <label for="inputCantidad" class="form-label"> Ingresa el tamaño de la matriz: </label>
+            <div class="row">
+              <input type="number" class="form-control col-md-2" id="inputCantidad" placeholder="Ingresa el tamaño de la matriz nxn">
+              <button class="btn btn-primary"  type="button" name="button" onclick="agregarCajas()"> Crear Matriz</button>
+            </div>
+          </div>
+          <div style="width: 50%; margin: 0 auto;">
+            <h5 id="txtTamanioMatriz"></h5>
+            <div id="matriz" ></div>
+            <br>
+            <button type="button" id="btnCalcular" class="btn btn-primary btn-outline" onclick="llenarMatriz()"> Cálcular Determinante </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
