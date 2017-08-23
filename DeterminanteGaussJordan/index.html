@@ -1,36 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title> Determinante Gauss Jordan </title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="node_modules/angular/angular.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-md-10 col-md-offset-5">
-        <form>
-          <div class="form-group col-md-12 col-md-offset-1">
-            <label for="inputCantidad" class="form-label"> Ingresa el tamaño de la matriz: </label>
-            <div class="row">
-              <input type="number" class="form-control col-md-2" id="inputCantidad" placeholder="Ingresa el tamaño de la matriz nxn">
-              <button class="btn btn-primary"  type="button" name="button" onclick="agregarCajas()"> Crear Matriz</button>
-            </div>
-          </div>
-          <div style="width: 50%; margin: 0 auto;">
-            <h5 id="txtTamanioMatriz"></h5>
-            <div id="matriz" ></div>
-            <br>
-            <button type="button" id="btnCalcular" class="btn btn-primary btn-outline" onclick="llenarMatriz()"> Cálcular Determinante </button>
-          </div>
-          <div>
-            <h5> Determinante: </h5>
-            <label class="form-label" id="determinante"></label>
-          </div>
-        </form>
-      </div>
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8" />
+	<title>Determinante por gauss</title>
+	<script type="text/javascript" src="js/script.js"></script>
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
+</head>
+<body>
+	<div class="container" id="container">
+    <label for="inputCantidad" class="form-label"> Ingresa el tamaño de la matriz: </label>
+		<div class="entrada">
+			<input type="text" id="entradaN" placeholder="Ingresa el tamaño de la matriz nxn">
+      <button type="button" onclick="generarMatriz()" class="btn btn-outline btn-primary" id="btnGenerar" name="button"> Generar Matriz </button>
+		</div>
+    <div id="matriz"></div>
+		<div id="botonSolucion">
+      <button type="button" onclick="llenarSolucionar()" class="btn btn-outline btn-primary" id="btnSol" name="button"> Determinante </button>
+		</div>
+		<div id="contenedorSol"></div>
+	</div>
+</body>
 </html>
