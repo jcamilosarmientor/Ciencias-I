@@ -37,31 +37,43 @@ function llenarMatriz() {
     }
     numeros.push(fila);
   }
-  calcularDeterminante(numeros);
+  $('#determinante').html(determinante(numeros));
 }
 
-function calcularDeterminante (a) {
-  n = a.length;
-  signo= 1;
-  for(i=0;i<n-2;i++){
-    for(j=i+1; j<n; j++){
-      for(k=i+1;k<n;k++){
-        a[j][k]= a[j][k]-((a[i][k]*a[j][i])/(a[i][i]));
+function determinante(matriz) {
+  if(matriz.length==2){
+    var det=(matriz[0][0]*matriz[1][1])-(matriz[1][0]*matriz[0][1]);
+    return det;
+  }
+  var suma = 0;
+  for(var i = 0; i<matriz.length; i++){
+    var nm = createMatriz(matriz.length-1);
+    for(var j=0; j<matriz.length; j++){
+      if(j!=i){
+        for(var k=1; k<matriz.length; k++){
+          var indice=-1;
+          if(j<i)
+          indice=j;
+          else if(j>i)
+          indice=j-1;
+          nm[indice][k-1] = matriz[j][k];
+        }
       }
     }
+    if(i%2==0){
+      suma += matriz[i][0] * determinante(nm);
+    }
+    else{
+      suma -= matriz[i][0] * determinante(nm);
+    }
   }
-  det=1
-  for(i=0;i<n; i++){
-    det= det*a[i][i];
-  }
-  det= det*signo;
-  console.log(det);
+  return suma;
 }
 
-function interCambiarFila(fila) {
-  for (var i = fila; i < numeros.length; i++) {
-    temp = numeros[i];
-    numeros[i] = numeros[i+1];
-    numeros[i+1] = numeros;
+function createMatriz(size){
+  var matriz = new Array(size);
+  for (i = 0; i < size ; i++){
+    matriz[i]=new Array(size);
   }
+  return matriz;
 }
