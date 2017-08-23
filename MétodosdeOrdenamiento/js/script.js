@@ -1,18 +1,11 @@
 var app = angular.module('OrdenamientoApp', ['nvd3']);
 app.controller('controller', function($scope) {
-  var arr; // Arreglo a organizar
-  var chart;
-
-  var contSelection, // Contador para el número de operaciones del algorito de selección
-  contBubble, // Contador para el número de operaciones para el algoritmo burbuja
-  contInsertion,  // Contador para el número de operaciones para el algoritmo inserción
-  contMerge;  // Contaror para el número de operaciones apra el algoritmo merge
-
 
   // Ordenamiento burbula simple
   function bubbleSort(myArr){
     var tamanio = myArr.length;
-    contBubble = 1; // pass = 1;
+    // Contador para el número de operaciones del algoritmo burbuja
+    var contBubble = 1; // pass = 1;
     for (var i = 0; i < tamanio-1; i++) {
       contBubble += 3; //i < tamanio-1; i++
       contBubble += 2; // var j = i+1
@@ -27,60 +20,56 @@ app.controller('controller', function($scope) {
         }
       }
     }
-    return myArr;
+    return contBubble;
   }
   // Ordenamiento por selección
   function selectionSort(myArr){
     var size = myArr.length;
-    contSelection = 1; // slot = 0;
-    for( var slot = 0; slot < size -1; slot ++ ){ // outer loop
-      contSelection += 3; // slot < size -1; slot ++
+    var contSelection = 1; // Contador para el número de operaciones del algorito de selección
+    for (var slot = 0; slot < size -1; slot ++) {
+      contSelection += 3;
       var smallest = slot;
-      contSelection += 3; // smallest = slot;  check = slot + 1;
-      for( var check = slot + 1; check < size; check++ ){ // inner loop
-        contSelection += 3; // myArr[check] < myArr[smallest]
-        if( myArr[check] < myArr[smallest] ){
+      contSelection += 3;
+      for (var check = slot + 1; check < size; check++) {
+        contSelection += 5;
+        if (myArr[check] < myArr[smallest]) {
           smallest = check;
-          contSelection++; // smallest = check;
+          contSelection++;
         }
       }
-      contSelection++ // fin del cliclo interior
-      contSelection += 2; // smallest != slot
-      if( smallest != slot ){
+      contSelection += 2;
+      if (smallest != slot) {
         var tmpVal = myArr[smallest];
         myArr[smallest] = myArr[slot];
         myArr[slot] = tmpVal;
-        contSelection += 7; // var tmpVal = myArr[smallest]; myArr[smallest] = myArr[slot]; myArr[slot] = tmpVal;
+        contSelection += 7;
       }
     }
-    contSelection ++; // Fin del cliclo exterior
-    return myArr;
+    contSelection ++;
+    return contSelection;
   }
 
   // Ordenamiento por inserción
   function insertionSort(myArr) {
-    var tamanio = myArr.length;
-    var i = tamanio/2;
-    contInsertion = 1; // var i = tamanio/2;
-    while (i <= tamanio) {
-      var j = i - 1;
-      var temp = myArr[i];
-      contInsertion += 7; // (i <= n) var j = i - 1; var temp = myArr[i]; (temp < arr[j])
-      while (temp < myArr[j]) {
-        myArr[j+1] = myArr[j];
-        j = j - 1;
-        contInsertion += 7; // j+1; arr[j+1] = arr[j]; j = j - 1;
-      }
-      contInsertion++; // Fin del while interior
-      myArr[j+1] = temp;
-      i++;
-      contInsertion += 6; // arr[j+1] = temp; i++;
+    var len = myArr.length;
+    var contInsetion = 1; // Contador del número de operaciones
+    for (var i = 1; i < len; i++) {
+        var tmp = myArr[i];
+        contInsetion += 6;
+        for (var j = i - 1; j >= 0 && (myArr[j] > tmp); j--) {
+            myArr[j + 1] = myArr[j];
+            contInsetion += 8;
+        }
+        myArr[j + 1] = tmp;
+        contInsetion += 4;
     }
-    contInsertion++; // Fin del while exterior
-    return myArr;
+    contInsetion++;
+    return contInsetion;
   }
 
+  var contMerge; // Contaror para el número de operaciones del algoritmo merge
   function sort(array) {
+    // Contaror para el número de operaciones apra el algoritmo merge
     contMerge = 1;
     var length = array.length,
     mid    = Math.floor(length * 0.5),
@@ -94,7 +83,6 @@ app.controller('controller', function($scope) {
     contMerge++;
     return conquer(sort(left), sort(right));
   }
-
   var conquer = function(left, right) {
     var sorted = [];
     var i = 0; //left tracker
@@ -124,93 +112,144 @@ app.controller('controller', function($scope) {
     return sorted;
   }
 
+  var contQuick = 0; // Contador para el número de operaciones del algoritmo quick
+  function quickSort(array, left, right, compare, swap) {
+    contQuick++;
+    if (left < right) {
+      contQuick += 2;
+      var pivot = partitionRandom(array, left, right, compare, swap);
+      quickSort(array, left, pivot - 1, compare, swap);
+      quickSort(array, pivot + 1, right, compare, swap);
+      contQuick += 4;
+    }
+    return array;
+  }
+
+  function partitionRandom(array, left, right, compare, swap) {
+    var pivot = left + Math.floor(Math.random() * (right - left));
+    contQuick += 5;
+    if (pivot !== right) {
+      swap(array, right, pivot);
+      contQuick++;
+    }
+    contQuick++;
+    return partitionRight(array, left, right, compare, swap);
+  }
+
+  function partitionRight(array, left, right, compare, swap) {
+    var mid = left;
+    contQuick += 2;
+    for (var i = mid; i < right; i++) {
+      contQuick += 4;
+      if (compare(array, i, right) <= 0) {
+        contQuick++;
+        if (i !== mid) {
+          contQuick++;
+          swap(array, i, mid);
+        }
+        mid++;
+        contQuick++;
+      }
+    }
+    contQuick++;
+    if (right !== mid) {
+      contQuick++;
+      swap(array, right, mid);
+    }
+    return mid;
+  }
+
 
   // Sobreescribe arr
   function generarArreglo() {
     $scope.data[0].values = [];
     $scope.data[1].values = [];
     $scope.data[2].values = [];
+    $scope.data[3].values = [];
     for (var i = 20; i < 201; i++) {
-      var arr = [];
+      var arrB = [],
+      arrS = [],
+      arrI = [],
+      arrM = [];
+      arrQ = [];
       for (var j = 0; j < i; j++) {
-        var aleatorio = Math.floor((Math.random() * 100) + 1); // Genera un número aleatorio entre 1 y 100
-        arr.push(aleatorio);
+        var aleatorio = Math.floor((Math.random() * 200) + 1); // Genera un número aleatorio entre 1 y 100
+        arrB.push(aleatorio);
+        arrS.push(aleatorio);
+        arrI.push(aleatorio);
+        arrM.push(aleatorio);
+        arrQ.push(aleatorio);
       }
-      selectionSort(arr);
-      bubbleSort(arr);
-      insertionSort(arr);
-      sort(arr);
-      $scope.data[0].values.push({x: i, y: contSelection});
-      $scope.data[1].values.push({x: i, y: contBubble});
-      $scope.data[2].values.push({x: i, y: contInsertion});
+      sort(arrM);
+      quickSort(arrQ);
+      $scope.data[0].values.push({x: i, y: bubbleSort(arrB)});
+      $scope.data[1].values.push({x: i, y: selectionSort(arrS)});
+      $scope.data[2].values.push({x: i, y: insertionSort(arrI)});
       $scope.data[3].values.push({x: i, y: contMerge});
+      $scope.data[4].values.push({x: i, y: contQuick});
     }
   }
 
   // Muestra en el div correspondiente el arreglo ordenado
   $scope.mostrarArreglo = function() {
     generarArreglo();
-    $scope.arr = arr;
   }
 
   $scope.options = {
     chart: {
-      type: 'lineWithFocusChart',
+      type: 'lineChart',
       height: 450,
       margin : {
         top: 20,
         right: 20,
-        bottom: 60,
-        left: 150
+        bottom: 40,
+        left: 90
       },
-
       x: function(d){ return d.x; },
-
-      color: d3.scale.category10().range(),
-      duration: 300,
+      y: function(d){ return d.y; },
       useInteractiveGuideline: true,
-      clipVoronoi: false,
-
       xAxis: {
-        axisLabel: 'X (Nº de elementos)',
-        tickFormat: function(d){
-          return d3.format('.02f')(d);
-        },
+        axisLabel: 'Tamaño Arreglo (X)'
       },
-
       yAxis: {
-        axisLabel: 'Y (Operaciones \n elementales)',
-        rotateYLabel: false,
-        axisLabelDistance: -10,
+        axisLabel: 'Nº Operaciones (Y)',
         tickFormat: function(d){
-          return d3.format('.02f')(d);
+          return d3.format('.f')(d);
         },
+        axisLabelDistance: 20
       },
-
-      y2Axis: {
-        tickFormat: function(d){
-          return d3.format(',.2f')(d);
-        }
-      }
+    },
+    title: {
+      enable: true,
+      text: 'Tabla de comparación entre los algoritmos de ordenamiento'
     }
   };
 
   $scope.data = [
     {
-      key: "Ordenamiento por Selección",
-      values: []
+      key: 'Burbuja',
+      values: [],
+      color: '#00FF00'
     },
     {
-      key: "Ordenamiento Burbuja",
-      values: []
+      key: 'Selección',
+      values: [],
+      color: '#FA58D0'
     },
     {
-      key: "Ordenamiento Inserción",
-      values: []
+      key: 'Inserción',
+      values: [],
+      color: '#2E2EFE'
     },
     {
-      key: "Ordenamiento MergeSort",
-      values: []
+      key: 'MergeSort',
+      values: [],
+      color: '#B40431'
+    },
+    {
+      key: 'QuickSort',
+      values: [],
+      color: '#585858'
     }
   ];
 });
