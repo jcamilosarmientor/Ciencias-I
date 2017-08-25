@@ -1,15 +1,20 @@
 {
-  "name": "mochila",
+  "name": "busqueda_binaria",
   "version": "1.0.0",
-  "description": "Estructuras de datos (creo :v)",
+  "description": "Algoritmo de busqueda binaria",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "busqueda_binaria",
+    "javascript",
+    "algoritmos"
+  ],
   "author": "Juan Camilo Sarmiento Reyes",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^4.0.0-beta",
-    "jquery": "^3.2.1"
+    "angular": "^1.6.6",
+    "bootstrap": "^3.3.7"
   }
 }
