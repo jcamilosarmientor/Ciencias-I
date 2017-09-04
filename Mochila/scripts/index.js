@@ -21,7 +21,7 @@ function llenarArrelgos() {
   }
   insertionSort(pesos);
   var mochila = crearMatrizMochila(numArticulos, pesoLim);
-  console.log(mochila);
+  llenarTabla(mochila);
 }
 
 function crearMatrizMochila(numArticulos, limite) {
@@ -33,7 +33,7 @@ function crearMatrizMochila(numArticulos, limite) {
         matrizMochila[i][j] = 0;
       }  else {
         if (j-parseInt(pesos[i-1]) < 0) {
-          matrizMochila[i][j] = 0;
+          matrizMochila[i][j] = matrizMochila[i-1][j];
         } else {
           matrizMochila[i][j] = maximo(matrizMochila[i-1][j], matrizMochila[i-1][j-parseInt(pesos[i-1])]+parseInt(valores[i-1]));
         }
@@ -41,6 +41,79 @@ function crearMatrizMochila(numArticulos, limite) {
     }
   }
   return matrizMochila;
+}
+
+function llenarTabla(matrizMochila) {
+  for (var i = 1; i < matrizMochila.length; i++) {
+    for (var j = 1; j < matrizMochila[i].length; j++) {
+      $('#input_'+i+'_'+j).val(matrizMochila[i][j]);
+      $('#result_'+i+'_'+j).append(componerArticulos(matrizMochila[i][j]));
+    }
+  }
+}
+
+function componerArticulos(valor) {
+  var temp = valores[0];
+  var composicion = [[1,temp]];
+  saltar = 1;
+  var cont = 0;
+  while (cont < valores.length) {
+    if (valor === 0) {
+      composicion = [[0,0]];
+      break;
+    }
+    if (valores[cont] === valor)  {
+      composicion = [[(cont+1),valores[cont]]];
+      break;
+    }
+
+    if ((temp+valores[cont+1]) <= valor) {
+      temp += valores[cont+1];
+      composicion.push([(cont+2),valores[cont+1]]);
+      cont++;
+    } else {
+      if (temp === valor) {
+        break;
+      } else {
+        temp = valores[0];
+        composicion = [[1,temp]];
+        cont = saltar;
+        saltar++;
+      }
+    }
+  }
+  var txt = crearTxt(composicion);
+  return txt;
+}
+
+
+function crearTxt(arrCompo) {
+  var txt = '';
+  for (var i = 0; i < arrCompo.length; i++) {
+    if (txt.length > 0) {
+      txt += '<small>+</small>'
+    }
+    txt += '<b style="color:green;">'+arrCompo[i][1]+'</b>:<b>'+arrCompo[i][0]+'</b>';
+  }
+  return txt;
+}
+
+function binarySearch(valor) {
+  var low = 0;
+  var high = valores.length - 1;
+  while (low <= high) {
+    var middle = Math.floor((low + high)/2);
+    var guess = valores[middle];
+    if (guess == valor) {
+      return [(valores.indexOf(guess)+1), guess]
+    }
+    if (guess > valor) {
+      high = middle - 1;
+    } else {
+      low = middle + 1;
+    }
+  }
+  return -1;
 }
 
 function insertionSort(myArr) {
@@ -76,7 +149,7 @@ function crearTabla(numArticulos, pesoLim) {
     tabla += '<td><input type="text" id="peso_'+i+'" class="form-control col-md-6"></td>'
     tabla += '<td><input type="text" id="valor_'+i+'" class="form-control col-md-6"></td>'
     for (var j = 0; j < pesoLim; j++) {
-      tabla += '<td><input type="text" id="input_'+i+'_'+j+'" class="form-control col-md-6" disabled></td>';
+      tabla += '<td><div id="result_'+(i+1)+'_'+(j+1)+'"><input type="text" id="input_'+(i+1)+'_'+(j+1)+'" class="form-control col-md-12" disabled></td>';
     }
     tabla += '</tr>';
   }
