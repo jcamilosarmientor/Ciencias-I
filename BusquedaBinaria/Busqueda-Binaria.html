@@ -1,0 +1,129 @@
+<html>
+	<head>
+		<script>
+		var arr;
+		var valor;
+		var n1;
+		var pointSize = 3;
+			function Canvas(){
+				var formula=0;
+				//puntos= document.getElementById("panel").value;
+				var lienzo=document.getElementById("miLienzo");
+				var contexto=lienzo.getContext("2d");
+				contexto.clearRect(0,0,2000,1000);
+				contexto.beginPath();
+				contexto.moveTo(0,400);
+				for(j=0;j<100;j++){
+					//contexto.strokeStyle="rgba(0,255,0,1)";
+					capturarArreglo(j);
+					capturarValorBuscar(j);
+					valorDeC= busquedaBinaria(arr,valor);
+					//document.getElementById("salida").innerHTML+="<br>"+"Valor de c="+valorDeC+"</br>";
+					drawCoordinates(j*30,400-(valorDeC*20));
+					//contexto.lineTo(j*30,400-(valorDeC*20));
+					//contexto.stroke();
+				}
+				contexto.beginPath();
+				contexto.moveTo(0,400);
+				for(i=0;i<100;i++){
+					contexto.strokeStyle="rgba(255,10,0,1)";
+					formula= 2+Math.log2(i);
+					//document.getElementById("salida").innerHTML+="<br>"+"Valor de formula="+formula+"</br>";
+					contexto.lineTo(i*30,400-(formula*40));
+					contexto.stroke();
+				}
+			}
+			function drawCoordinates(x,y){
+				var ctx = document.getElementById("miLienzo").getContext("2d");
+				ctx.fillStyle = "##3B83BD"; // color punto
+				ctx.beginPath();
+				ctx.arc(x, y, pointSize, 0, Math.PI * 2, true);
+				ctx.fill();
+			}
+
+
+			function capturarArreglo(n1){
+			  arr = new Array(n1);
+			  for(i=0; i<n1;i++){
+				  //arr[i]=i;
+				arr[i]=Math.floor((Math.random() * n1) + 1);
+			  }
+			  //document.getElementById("salida").innerHTML="<br>"+"Arreglo desordenado: "+arr+"</br>";
+			}
+			function capturarValorBuscar(n1){
+			  valor=Math.floor((Math.random() * n1) + 1);
+			  document.getElementById("salida").innerHTML+="<br>"+"El numero a buscar es : "+valor+"</br>";
+			}
+
+
+			function quicksort(arr)
+			{
+				if (arr.length == 0){
+					return [];}
+
+				var left = new Array();
+				var right = new Array();
+				var pivot = arr[0];
+				d=1;
+				for (var i = 1; i < arr.length; i++) {
+					d=d+4;
+					if (arr[i] < pivot) {
+						d=d+2;
+					   left.push(arr[i]);
+					} else {
+						d=d+2;
+					   right.push(arr[i]);
+					}
+				}
+				resultado=quicksort(left).concat(pivot, quicksort(right));
+
+				return resultado;
+			}
+			var c;
+			var formula;
+			function busquedaBinaria(arr,valor){
+				arr=quicksort(arr);
+				//document.getElementById("salida").innerHTML+="<br>"+"Arreglo ordenado: "+arr+"</br>";
+				centro=0;
+				limiteInferior=0;
+				limiteSuperior=arr.length-1;
+				c=1;
+				while(limiteInferior<=limiteSuperior){
+					centro=((limiteSuperior-limiteInferior)/2)+limiteInferior;
+					centro=Math.round(centro);
+					c=c+4;
+					if(valor==arr[centro]){
+						//document.getElementById("salida").innerHTML+="<br>"+"Posicion del Elemento: "+centro+"</br>";
+						//document.getElementById("salida").innerHTML+="<br>"+"Se encontro el numero y es: "+arr[centro]+"</br>";
+						return c;
+					}
+					else if(valor<arr[centro]){
+						limiteSuperior=centro-1
+						c=c+1;}
+					else{
+						limiteInferior=centro+1;
+						c=c+1;}
+						c=c/2;
+						c=c+2;
+				}
+				c=c+1
+				//document.getElementById("salida").innerHTML+="<br>"+"Posicion del Elemento: "+centro+"</br>";
+				//document.getElementById("salida").innerHTML+="<br>"+"no se encontro el numero";
+				return c;
+			}
+
+
+
+		</script>
+	</head>
+	<body>
+		<center><h1>Gráfica de busqueda Binaria</h1></center>
+
+			<button type="button" id="boton" value="graficar" onclick="Canvas()">Graficar</button>
+
+		<canvas id="miLienzo" height="400" width="2000"></canvas>
+			<div id="salida"></div>
+
+	</body>
+
+</html>

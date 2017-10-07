@@ -1,0 +1,297 @@
+<html>
+	<head>
+		<script>
+			function general(A, B, C) {
+				this.A = A;
+				this.B = B;
+				this.C = C;
+				this.generarCampos = generarCampos;
+				this.capturaDatos = capturaDatos;
+				this.matrizMax = matrizMax;
+				this.esconder = esconder;
+				this.Maximizar = Maximizar;
+				this.imprimir = imprimir;
+				this.resultado = resultado;
+
+				function generarCampos(C, B) {
+					if (C && B) {
+
+					}
+					else {
+						alert("Las casillas no pueden estar vacias");
+						esconder();
+					}
+					campos = document.getElementById("generacionElementos");
+					confirmacion = document.getElementById("confirmacion");
+					var llenado = "";
+					//Tabla generada para el valor y el peso de los articulos
+					llenado += "<table>";
+					llenado += "<tr>";
+					llenado += "<td>";
+					llenado += "VALOR";
+					llenado += "</td>";
+					llenado += "<td>";
+					llenado += "PESO";
+					llenado += "</td>";
+					llenado += "</tr>";
+
+					for (var i = 0; i < C; i++) {
+						llenado += "<tr>";
+						for (var j = 0; j < B; j++) {
+							llenado += "<td>";
+							llenado += "<input id ='A" + i + j + "' type = 'text' size='6' >";
+							llenado += "</td>";
+
+						}
+						llenado += "</tr>";
+					}
+					llenado += "</table>";
+					llenado += "<input type='button' value='calcular' onclick = 'captura()' >";
+
+					campos.innerHTML = llenado;
+					confirmacion.innerHTML = "";
+
+				}
+
+				function capturaDatos() {
+					//toma todos los valores de la matriz de cada articulo
+					var cantidad = parseInt(document.getElementById("numeroElementos").value);
+
+					var llenar = "Por favor, revise los datos y vuelva a intentarlo";
+					for (var i = 0; i < cantidad; i++) {
+						for (var j = 0; j < 2; j++) {
+							if (parseInt(document.getElementById('A' + i + j).value)) {
+							}
+							else {
+								campos.innerHTML = "";
+								confirmacion.innerHTML = llenar;
+
+							}
+						}
+					}
+					A = new Array(cantidad + 1);
+
+					for (var i = 0; i < cantidad + 1; i++) {
+						A[i] = new Array(2);
+					}
+
+					A[0][0] = 0;
+					A[0][1] = 0;
+
+					for (var i = 1; i < cantidad + 1; i++) {
+						for (var j = 0; j < 2; j++) {
+							var c = i - 1;
+							A[i][j] = Number(document.getElementById('A' + c + j).value);
+							;
+						}
+					}
+
+				}
+
+
+				function matrizMax() {//Crea la matriz que va acumulando lo valores para maximizar
+					var cantidad = parseInt(document.getElementById("numeroElementos").value);
+					var pesoMaximo = parseInt(document.getElementById("pesoMaximo").value);
+					B = new Array(pesoMaximo + 1);
+
+					C = new Array(pesoMaximo + 1);
+
+					for (var i = 0; i <= pesoMaximo; i++) {//crea la matriz con los valores
+						B[i] = new Array(cantidad + 1);
+
+
+					}
+					for (var i = 0; i <= pesoMaximo; i++) {
+						C[i] = new Array(cantidad + 1);
+
+
+					}
+					for (var j = 0; j <= pesoMaximo; j++) {// llena la primera fila de la matriz C con 0
+						i = 0;
+						C[i][j] = "0";
+					}
+					for (i = 0; i < cantidad + 1; i++) {// Llena la primera columna de la matriz B con 0
+						j = 0;
+						C[i][0] = "0";
+						;
+					}
+
+					for (var j = 0; j <= pesoMaximo; j++) {// llena la primera fila de la matriz b con 0
+						i = 0;
+						B[i][j] = 0;
+					}
+					for (i = 0; i < cantidad + 1; i++) {// Llena la primera columna de la matriz B con 0
+						j = 0;
+						B[i][j] = 0;
+					}
+
+
+					for (i = 1; i <= cantidad; i++) {//Llena la matriz con los respectivos valores ya maximizados
+						for (j = 1; j < pesoMaximo + 1; j++) {
+							//    console.log(A[i][1]);
+
+							if (Number(A[i][1]) > j) {
+								C[i][j] = C[i - 1][j];
+								B[i][j] = B[i - 1][j];
+							}
+
+							 else {
+								var a = B[i-1][j];
+								var b = B[i - 1][j - (A[i][1])] + A[i][0];
+								B[i][j] = Maximizar(a, b);
+
+								if (Maximizar(a, b) == a) {
+									if (C[i][j] === "0") {
+										C[i][j] === "";
+									} else {
+											C[i][j] = C[i-1][j];
+									}
+
+								}
+								else if (Maximizar(a, b) == b) {
+									if (C[i][j] === "0") {
+										C[i][j] === "";
+									} else {
+											C[i][j] = C[i - 1][j - (A[i][1])] + A[  i ][0]+":<b style='color:purple'>"+i+"</b>+";
+}
+									//C[i][j] = C[i - 1][j - (A[i][1])] + "[" + i + "]";
+									//C[i][j] = C[i - 1][j - (A[i][1])] + "+A[" + i + "][0]";
+									//alert(A[i][1]);
+								}
+							}
+
+						}
+
+					}
+
+
+				}
+				function imprimir() {
+					var cantidad = parseInt(document.getElementById("numeroElementos").value);
+					var pesoMaximo = parseInt(document.getElementById("pesoMaximo").value);
+
+					var llenaMatrizB = "";
+					resultadoMatrizB = document.getElementById("resultado B");
+					llenaMatrizB += "Valores Maximos";
+					console.log("MATRIZ B");
+					llenaMatrizB += "<table border = '1'>";
+					for (var i = 0; i <= cantidad; i++) {
+						if (i === 0) {
+							llenaMatrizB += "<tr>"
+							for (var z = 0; z <= pesoMaximo; z++) {
+								llenaMatrizB += "<td>"+z+"</td>";
+							}
+							llenaMatrizB += "</tr>"
+						}
+						llenaMatrizB += "<tr>";
+						for (var j = 0; j <= pesoMaximo; j++) {
+							llenaMatrizB += "<td><input type = 'text' value = " + B[i][j] + " style='height:100%;' disabled ='true'><label>"+C[i][j]+"</label></td>";
+							console.log(i + '' + j);
+							console.log(B[i][j]);
+						}
+						llenaMatrizB += "</tr>";
+					}
+					llenaMatrizB += "</table>";
+					resultadoMatrizB.innerHTML = llenaMatrizB;
+
+					console.log("MATRIZ C");
+					resultadoMatrizC = document.getElementById("resultado C");
+					var llenaMatrizC = "";
+					llenaMatrizC += ("MATRIZ C");
+					llenaMatrizC += "<table>";
+					for (var i = 0; i <= cantidad; i++) {
+						llenaMatrizC += "<tr>";
+						for (var j = 0; j <= pesoMaximo; j++) {
+							llenaMatrizC += "<td><input type = 'text' value = " + C[i][j] + "  disabled ='true'></td>";
+							console.log(i + '' + j);
+							console.log(C[i][j]);
+						}
+						llenaMatrizC += "</tr>";
+					}
+					llenaMatrizC += "</table>";
+					resultadoMatrizC.innerHTML = llenaMatrizC;
+
+
+
+
+				}
+				function resultado() {
+					var cantidad = parseInt(document.getElementById("numeroElementos").value);
+					var pesoMaximo = parseInt(document.getElementById("pesoMaximo").value);
+
+					var llenado = "";
+					respuesta = document.getElementById("confirmacion");
+
+					llenado += "El maximo valor que permite la mochila es: ";
+					llenado += B[cantidad][pesoMaximo];
+					llenado += " con los siguientes elementos ";
+					llenado += C[cantidad][pesoMaximo];
+
+					respuesta.innerHTML = llenado;
+				}
+
+				function Maximizar(x, y) {
+					if (x > y) {
+						return x;
+					} else {
+						return y;
+					}
+				}
+
+				function esconder() {
+					campos.innerHTML = "";
+				}
+
+			}//Se cierra la función general
+
+
+
+			function iniciar() {
+				mochila1 = new general();
+				mochila1.generarCampos((parseInt(document.getElementById("numeroElementos").value)), 2);
+
+			}
+			function captura() {
+				mochila1.capturaDatos();
+				mochila1.matrizMax();
+				mochila1.imprimir();
+				mochila1.resultado();
+			//    mochila1.DibujarTabla1();
+
+			}
+		</script>
+	</head>
+
+    <body>
+
+       <center>
+            <div id="total">
+
+                    <div id="principal">
+                        <h1>PROBLEMA DE LA MOCHILA</h1>
+                        <p>
+                         DIGITE EL PESO MAXIMO DE LA MOCHILA <br>
+                        <input id="pesoMaximo" type="text" size="6"/><br>
+                        DIGITE EL NUMERO DE ELEMENTOS: <br>
+                        <input id="numeroElementos" type="text" size="6"/><br>
+                        <input type="button" value="procesar" onclick="iniciar()"/>
+                    </div>
+
+
+                    <div id="secundario">
+                        <div id="generacionElementos">
+                        </div>
+                        <div id="confirmacion">
+                        </div>
+                        <div id="resultado B">
+                        </div>
+                        <!-- MATRIZ C <div id="resultado C"></div> -->
+						<div id="prueba">
+                        </div>
+                    </div>
+
+            </div>
+        </center>
+
+    </body>
+</html>

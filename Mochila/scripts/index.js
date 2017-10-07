@@ -45,7 +45,7 @@ function crearMatrizMochila(numArticulos, limite) {
 
 function llenarTabla(matrizMochila) {
   for (var i = 1; i < matrizMochila.length; i++) {
-    for (var j = 1; j < matrizMochila[i].length; j++) {
+    for (var j = 1; j <= matrizMochila[i].length; j++) {
       $('#input_'+i+'_'+j).val(matrizMochila[i][j]);
       $('#result_'+i+'_'+j).append(componerArticulos(matrizMochila[i][j]));
     }
@@ -53,33 +53,38 @@ function llenarTabla(matrizMochila) {
 }
 
 function componerArticulos(valor) {
-  var temp = valores[0];
-  var composicion = [[1,temp]];
-  saltar = 1;
-  var cont = 0;
-  while (cont < valores.length) {
-    if (valor === 0) {
-      composicion = [[0,0]];
-      break;
-    }
-    if (valores[cont] === valor)  {
-      composicion = [[(cont+1),valores[cont]]];
-      break;
-    }
+  var acu = 0; // Lleva la sumatoria de los valores
+  var composicion = [[0,0]]; // La composicion para el valor
+  var saltar = -1; // Establece el termino que debe saltarse en el ciclo
+  var cont = 0; // El contador para el ciclo while
 
-    if ((temp+valores[cont+1]) <= valor) {
-      temp += valores[cont+1];
-      composicion.push([(cont+2),valores[cont+1]]);
-      cont++;
-    } else {
-      if (temp === valor) {
-        break;
+  while (cont < valores.length) {
+    if (cont !== saltar) {
+      if ((valores[cont]+acu) <= valor) {
+        acu += valores[cont];
+        composicion.push([cont+1,valores[cont]]);
+        cont++;
       } else {
-        temp = valores[0];
-        composicion = [[1,temp]];
-        cont = saltar;
-        saltar++;
+        if (acu === valor) {
+          cont = valores.length+1;
+        } else {
+          saltar = cont;
+          cont = 0;
+          composicion = [[0,0]];
+          acu = 0;
+        }
       }
+
+      if (valores[cont] === valor) {
+        composicion = [[cont+1,valores[cont]]];
+        cont = valores.length+1;
+      }
+
+    } else {
+      console.log('sel salta!');
+      cont++;
+      console.log(cont);
+      console.log(valores.length);
     }
   }
   var txt = crearTxt(composicion);
@@ -119,11 +124,11 @@ function binarySearch(valor) {
 function insertionSort(myArr) {
   var len = myArr.length;
   for (var i = 1; i < len; i++) {
-      var tmp = myArr[i];
-      for (var j = i - 1; j >= 0 && (myArr[j] > tmp); j--) {
-          myArr[j + 1] = myArr[j];
-      }
-      myArr[j + 1] = tmp;
+    var tmp = myArr[i];
+    for (var j = i - 1; j >= 0 && (myArr[j] > tmp); j--) {
+      myArr[j + 1] = myArr[j];
+    }
+    myArr[j + 1] = tmp;
   }
   return myArr;
 }
@@ -146,8 +151,8 @@ function crearTabla(numArticulos, pesoLim) {
   tabla += '<tr><th>Peso</th><th>Valor</th><th colspan="'+pesoLim+'"></th></tr></thead><tbody>';
   for (var i = 0; i < numArticulos; i++) {
     tabla += '<tr>';
-    tabla += '<td><input type="text" id="peso_'+i+'" class="form-control col-md-6"></td>'
-    tabla += '<td><input type="text" id="valor_'+i+'" class="form-control col-md-6"></td>'
+    tabla += '<td><input type="text" id="peso_'+i+'" class="form-control col-md-12"></td>'
+    tabla += '<td><input type="text" id="valor_'+i+'" class="form-control col-md-12"></td>'
     for (var j = 0; j < pesoLim; j++) {
       tabla += '<td><div id="result_'+(i+1)+'_'+(j+1)+'"><input type="text" id="input_'+(i+1)+'_'+(j+1)+'" class="form-control col-md-12" disabled></td>';
     }

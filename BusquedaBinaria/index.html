@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title> Búsqueda binaria </title>
+    <link rel="stylesheet" href="node_modules/nvd3/build/nv.d3.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/d3/d3.js"></script>
+    <script src="node_modules/nvd3/build/nv.d3.js"></script>
+    <script src="node_modules/angular-nvd3/dist/angular-nvd3.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+  </head>
+  <body ng-controller="controller">
+    <button type="button" class="btn btn-primary btn-outline col-md-offset-6 " ng-click="prueba()" name="button"> Generar </button>
+    <div class="container" id="tabla">
+      <nvd3 options="options" data="data"></nvd3>
+    </div>
+  </body>
+</html>
