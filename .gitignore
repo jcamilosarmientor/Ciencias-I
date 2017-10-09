@@ -1,1 +1,5 @@
 .DS_Store
+/OperacionesEnPostFija/nbproject/private/
+/OperacionesEnPostFija/build/
+/ParseadorInfijaPostfija/build/
+/ParseadorInfijaPostfija/nbproject/private/
