@@ -15,6 +15,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         p = new Parseador();
+        System.out.println("p:"+p);
     }
     
     /**
@@ -92,8 +93,12 @@ public class Principal extends javax.swing.JFrame {
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
         String postfija = p.parsear(txtEntrada.getText());
         double resultado = p.f(postfija, 0);
-        lblResultado.setText(postfija);
-        lblResultFunc.setText(new String(resultado+""));
+        if (p.getError().length() != 0) {
+            lblResultado.setText(p.getError());
+        } else {
+            lblResultado.setText(postfija);
+            lblResultFunc.setText(new String(resultado+""));
+        }
         //String postfija = p.parsear(s.next());
     }//GEN-LAST:event_btnCalcularActionPerformed
 

@@ -9,12 +9,13 @@ public class Parseador{
 	
 	//Guarda la �ltima expresi�n que se tradujo a postfijo para poder evaluar en ella sin dar una nueva expresi�n
 	private String ultimaParseada;
-	
+	private String error;
 	
 	//CONSTRUCTORES
 	
 	
 	public Parseador(){
+            this.error = "";
 		ultimaParseada="0";
 	}
 
@@ -167,21 +168,27 @@ public class Parseador{
 		
 			//Procesa al final
 			while(!PilaOperadores.empty()){ //Saca todos los operadores mientras la pila no est� vac�a
-				if(parentesis.indexOf((String)PilaOperadores.peek())!=-1)
-					throw new SintaxException("Hay un par�ntesis de m�s");
+				if(parentesis.indexOf((String)PilaOperadores.peek())!=-1) {
+                                    //throw new SintaxException("Hay un par�ntesis de m�s");
+                                    return "error en parentesis";
+                                }
+					
+                                
 				sacaOperador(PilaNumeros, PilaOperadores);
 			}
 		
 		}catch(EmptyStackException e){ //Si en alg�n momento se intenta sacar de la pila y est� vac�a hay un error
 			ultimaParseada="0";
-			throw new SintaxException("Expresi�n mal digitada");
+                        return "Expresión mal digitada";
+			//throw new SintaxException("Expresi�n mal digitada");
 		}
 		
 		ultimaParseada=((String)PilaNumeros.pop()); //Se obtiene el resultado final
 		
 		if(!PilaNumeros.empty()){ //Si la pila de n�meros no qued� vac�a hay un error
 			ultimaParseada="0";
-			throw new SintaxException("Error en la expresi�n");
+                        return "Error en la expresión";
+			//throw new SintaxException("Error en la expresi�n");
 		}
 		
 		return ultimaParseada; //Se devuelve el resultado evaluado
@@ -338,17 +345,21 @@ public class Parseador{
 				}
 			}//while
 		}catch(EmptyStackException e){ //Si en alg�n momento se acab� la pila hay un error
-			throw new ArithmeticException("Expresi�n mal parseada");
+                        return  0.0;
+			//throw new ArithmeticException("Expresi�n mal parseada");
 		}catch(NumberFormatException e){ //Si hubo error al traducir un n�mero hay un error
-			throw new ArithmeticException("Expresi�n mal digitada");
+                    return 0.0;
+			//throw new ArithmeticException("Expresi�n mal digitada");
 		}catch(ArithmeticException e){ //Cualquier otro error de divisi�n por cero o logaritmo negativo, etc.
-			throw new ArithmeticException("Valor no real en la expresi�n");
+                    return 0.0;
+//			throw new ArithmeticException("Valor no real en la expresi�n");
 		}
 		
 		a=((Double)pilaEvaluar.pop()).doubleValue(); //El valor a devolver
 		
 		if(!pilaEvaluar.empty()) //Si todav�a qued� otro valor en la pila hay un error
-			throw new ArithmeticException("Expresi�n mal digitada");
+                    return 0.0;
+			//throw new ArithmeticException("Expresi�n mal digitada");
 			
 		return a;
 	}//funcion f
@@ -475,4 +486,12 @@ public class Parseador{
 			super(e); //El constructor llama a la clase superior
 		}
 	}
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 }//fin de Parseador
