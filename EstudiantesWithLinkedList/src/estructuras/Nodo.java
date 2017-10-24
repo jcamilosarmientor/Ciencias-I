@@ -9,14 +9,17 @@ public class Nodo {
     private String nomEstudiante; // Nombre del estudiante
     private String codEstudiante; // Código del estudiante
     private Imagen foto;  // foto del estudiante
-    private int notas[]; // Notas del estudiante
+    private double notas[]; // Notas del estudiante
     private Nodo sig;   // Nodo siguiente
     private Nodo ant;   // Nodo anterior
 
-    public Nodo(String nomEstudiante, String codEstudiante, int[] notas) {
+    public Nodo(String nomEstudiante, String codEstudiante, double[] notas) {
         this.nomEstudiante = nomEstudiante;
         this.codEstudiante = codEstudiante;
         this.notas = notas;
+        this.sig = null;
+        this.ant = null;
+        
     }
 
     public String getNomEstudiante() {
@@ -35,11 +38,11 @@ public class Nodo {
         this.codEstudiante = codEstudiante;
     }
 
-    public int[] getNotas() {
+    public double[] getNotas() {
         return notas;
     }
 
-    public void setNotas(int[] notas) {
+    public void setNotas(double[] notas) {
         this.notas = notas;
     }
 
