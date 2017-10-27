@@ -15,13 +15,11 @@ public class Controlador {
     private double notas[];
 
     public Controlador() {
-        lista = new LinkedList(1000);
+        lista = new LinkedList();
     }
     
-    public int registrar(String nombre, String codigo, double[] notas) {
-        System.out.println("lista");
-        lista.recorrer();
-        return lista.insetar(nombre, codigo, notas);
+    public int registrar(String nombre, String codigo, String foto, double[] notas) {
+        return lista.insertar(nombre, codigo,foto, notas);
     }
     
     public String buscar(String codigo) {
@@ -30,12 +28,16 @@ public class Controlador {
         if (n == null) {
             return "Estudiante no encontrado";
         } else {
-            this.nombre = n.getNomEstudiante();
-            this.codigo = n.getCodEstudiante();
-            this.notas = n.getNotas();
+            this.nombre = n.getEstudiante().getNomEstudiante();
+            this.codigo = n.getEstudiante().getCodEstudiante();
+            this.notas = n.getEstudiante().getNotas();
             return null;
         }
     }
+    
+    /*public Estudiante[] recorrer() {
+        lista.recorrer();
+    }*/
     
     
     // Getter

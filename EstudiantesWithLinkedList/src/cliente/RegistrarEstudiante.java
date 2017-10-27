@@ -23,7 +23,8 @@ public class RegistrarEstudiante extends JFrame {
      * Creates new form RegistrarEstudiante
      */
     public RegistrarEstudiante() {
-        initComponents();;
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -173,7 +174,7 @@ public class RegistrarEstudiante extends JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         double notas[] = {Double.parseDouble(txtNota1.getText()), Double.parseDouble(txtNota2.getText()), Double.parseDouble(txtNota3.getText())};
-        int mensaje = controlador.registrar(txtNombre.getText(), txtCodigo.getText(), notas);
+        int mensaje = controlador.registrar(txtNombre.getText(), txtCodigo.getText(), "",notas);
         if (mensaje == 0) {
             JOptionPane.showMessageDialog(null,
                     "Estudiante registrado", //Mensaje

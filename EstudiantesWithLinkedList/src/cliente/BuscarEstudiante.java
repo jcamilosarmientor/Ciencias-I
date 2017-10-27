@@ -17,6 +17,7 @@ public class BuscarEstudiante extends javax.swing.JFrame {
      */
     public BuscarEstudiante() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
