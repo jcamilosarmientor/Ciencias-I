@@ -10,6 +10,7 @@ public class LinkedList {
 
     //private Nodo listaNodos[];
     private Nodo cab;
+    private int size;
 
     public LinkedList() {
         //listaNodos = new Nodo[10000];
@@ -19,7 +20,6 @@ public class LinkedList {
     public int insertar(String nomEstudiante, String codEstudiante, String foto, double[] notas) {
         BigIntegerStringConverter bg = new BigIntegerStringConverter();
         Nodo p, q;
-        int cont = 1;
         Nodo nv = new Nodo(nomEstudiante, codEstudiante, foto, notas);
         if (cab == null) {
             cab = nv;
@@ -30,7 +30,6 @@ public class LinkedList {
             while (p != null) {
                 // compara si codEstudiante es mayor a p.codEstudiante
                 if (bg.fromString(codEstudiante).compareTo(bg.fromString(p.getEstudiante().getCodEstudiante())) > 0) {
-                    System.out.println("es mayor");
                     q = p;
                     p = p.getSig();
 
@@ -46,28 +45,40 @@ public class LinkedList {
                     return 1;
                     // Aqui el estudiante registrado tiene un código menor
                 } else {
-                    System.out.println("es menor");
+                    if (q == null) {
+                        Nodo tmp = cab;
+                        cab = nv;
+                        cab.setSig(tmp);
+                        cab.setAnt(q);
+                        this.recorrer();
+                        size++;
+                        return 0;
+                    } else {
+                        nv.setAnt(q);
+                        nv.setSig(p);
+                        q.setSig(nv);
+                        p.setAnt(nv);
+                    }
+                    
+                    
                     q = p;
                     p = p.getSig();
                     
-                    nv.setAnt(q);
-                    nv.setSig(p);
-                    q.setSig(q);
-                    
-                    if (p !=  null) {
-                        p.setAnt(nv);
-                        return 0;
-                    }
+                    //q.setSig(q);
                 }
             }
-            System.out.println("termino de insertar");
+            size++;
             this.recorrer();
             return 0;
         }
-
-        //System.out.println("Registrado!");
     }
-
+    
+    /**
+     * Retorna el tamaño de la lista
+     * @return un entero con el tamaño de la lista
+     */
+    public int size() { return size; }
+    
     public void recorrer() {
         Nodo p, q;
         p = cab;
