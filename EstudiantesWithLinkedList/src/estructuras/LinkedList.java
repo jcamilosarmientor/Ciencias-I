@@ -8,21 +8,29 @@ import javafx.util.converter.BigIntegerStringConverter;
  */
 public class LinkedList {
 
-    //private Nodo listaNodos[];
     private Nodo cab;
     private int size;
 
     public LinkedList() {
-        //listaNodos = new Nodo[10000];
         cab = null;
+        this.size = 0;
     }
-
+    
+    /**
+     * 
+     * @param nomEstudiante
+     * @param codEstudiante
+     * @param foto
+     * @param notas
+     * @return 
+     */
     public int insertar(String nomEstudiante, String codEstudiante, String foto, double[] notas) {
         BigIntegerStringConverter bg = new BigIntegerStringConverter();
         Nodo p, q;
         Nodo nv = new Nodo(nomEstudiante, codEstudiante, foto, notas);
         if (cab == null) {
             cab = nv;
+            size++;
             return 0;
         } else {
             p = cab;
@@ -43,14 +51,14 @@ public class LinkedList {
                     // Aquí el estudiante ya está registrado    
                 } else if (bg.fromString(codEstudiante).compareTo(bg.fromString(p.getEstudiante().getCodEstudiante())) == 0) {
                     return 1;
-                    // Aqui el estudiante registrado tiene un código menor
+                            
+                    // Aqui el estudiante registrado tiene un código menor    
                 } else {
                     if (q == null) {
                         Nodo tmp = cab;
                         cab = nv;
                         cab.setSig(tmp);
                         cab.setAnt(q);
-                        this.recorrer();
                         size++;
                         return 0;
                     } else {
@@ -59,35 +67,37 @@ public class LinkedList {
                         q.setSig(nv);
                         p.setAnt(nv);
                     }
-                    
-                    
+
                     q = p;
                     p = p.getSig();
-                    
-                    //q.setSig(q);
                 }
             }
             size++;
-            this.recorrer();
             return 0;
         }
     }
-    
+
     /**
      * Retorna el tamaño de la lista
+     *
      * @return un entero con el tamaño de la lista
      */
-    public int size() { return size; }
-    
-    public void recorrer() {
+    public int size() {
+        return this.size;
+    }
+
+    public Estudiante[] recorrer() {
         Nodo p, q;
         p = cab;
+        int cont = 0;
+        Estudiante arrEstudiantes[] = new Estudiante[this.size];
         while (p != null) {
             q = p;
             p = p.getSig();
-            System.out.print("[" + q.getEstudiante().getCodEstudiante() + "]" + q.getEstudiante().getNomEstudiante() + ",");
+            arrEstudiantes[cont] = q.getEstudiante();
+            cont++;
         }
-        System.out.println("");
+        return arrEstudiantes;
     }
 
     public Nodo buscar(String codEstudiante) {
